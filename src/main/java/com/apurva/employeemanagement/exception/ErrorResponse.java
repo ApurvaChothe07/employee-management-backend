@@ -25,4 +25,15 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    public ErrorResponse(
+            LocalDateTime now,
+            int status,
+            Map<String, String> errors,
+            String message) {
+
+        this.timestamp = now;
+        this.status = status;
+        this.errors = errors;
+        this.message = message;
+    }
 }

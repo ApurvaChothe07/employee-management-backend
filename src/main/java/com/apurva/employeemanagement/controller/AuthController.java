@@ -1,5 +1,7 @@
 package com.apurva.employeemanagement.controller;
 
+import com.apurva.employeemanagement.dto.RegisterResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import com.apurva.employeemanagement.dto.LoginRequestDTO;
 import com.apurva.employeemanagement.dto.LoginResponseDTO;
@@ -17,8 +19,6 @@ public class AuthController {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
-
     private final UserService userService;
 
 
@@ -64,16 +64,20 @@ public class AuthController {
 
         return response;
     }
+
     @PostMapping("/register")
-    public String register(
-            @RequestBody RegisterRequestDTO registerRequest) {
+    public RegisterResponseDTO register(
+           @Valid @RequestBody RegisterRequestDTO registerRequest) {
 
         User user = userService.registerUser(
                 registerRequest.getUsername(),
                 registerRequest.getPassword()
         );
 
-        return "User registered successfully: " + user.getUsername();
+        return new RegisterResponseDTO("User registered successfully",
+                user.getUsername(),
+                user.getRole()
+        );
     }
 
 }

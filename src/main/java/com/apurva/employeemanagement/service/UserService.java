@@ -1,6 +1,7 @@
 package com.apurva.employeemanagement.service;
 
 import com.apurva.employeemanagement.entity.User;
+import com.apurva.employeemanagement.exception.UsernameAlreadyExistsException;
 import com.apurva.employeemanagement.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,12 @@ public class UserService {
     }
 
     public User registerUser(String username, String password) {
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new UsernameAlreadyExistsException(
+                    "Username already exists"
+            );
+        }
 
         String encodedPassword = passwordEncoder.encode(password);
 
